@@ -16,6 +16,8 @@ var (
 type output struct {
 	Prompts map[string]string
 	Debug   bool
+	Quiet   bool
+	Verbose bool
 }
 
 type winsize struct {
@@ -58,7 +60,9 @@ func consoleOutput(t string, e string, f string, args ...interface{}) {
 }
 
 func Info(f string, args ...interface{}) {
-	consoleOutput("info", "\n", f, args)
+	if !Output.Quiet {
+		consoleOutput("info", "\n", f, args)
+	}
 }
 
 func Debug(f string, args ...interface{}) {
@@ -68,7 +72,9 @@ func Debug(f string, args ...interface{}) {
 }
 
 func Warn(f string, args ...interface{}) {
-	consoleOutput("warn", "\n", f, args)
+	if Output.Verbose {
+		consoleOutput("warn", "\n", f, args)
+	}
 }
 
 func Error(f string, args ...interface{}) {
@@ -82,7 +88,7 @@ func Status(f string, args ...interface{}) {
 // Setup
 func init() {
 	Winsize = consInfo()
-	Output = output{Prompts: make(map[string]string), Debug: true}
+	Output = output{Prompts: make(map[string]string), Debug: true, Quiet: false, Verbose: true}
 	Output.Prompts["info"] = fmt.Sprintf("%s%s%s",
 		String(".").Cyan(),
 		String(".").Bold().Cyan(),
