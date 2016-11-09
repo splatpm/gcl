@@ -29,6 +29,38 @@ or prompt options for the console.
 * Error(string, args ...interface{})
 * Status(string, args ...interface{})
 
+*Example: Basic usage*
+
+```go
+package main
+
+import (
+  _ "git.thwap.org/splat/gout"
+)
+
+func main() {
+  Info("Test %s message", "info")
+  Debug("Test %s message", "debug")
+  Warn("Test %s %d", "warning", 1)
+  Error("error message")
+}
+```
+
+*Example: Changing the output headers*
+```go
+package main
+
+import (
+  _ "git.thwap.org/splat/gout"
+)
+
+func main() {
+  Info("Before")
+  Output.Prompts["info"] = String("###").Underline().Green()
+  Info("After")
+}
+```
+
 #### String type methods
 
 The String type is a alias for string, with the following methods.
@@ -46,6 +78,8 @@ The String type is a alias for string, with the following methods.
 * Blink() String
 * Reverse() String
 * Conceal() String
+
+*Example:*
 
 ```go
 package main
