@@ -1,9 +1,16 @@
 
 
 [![Build Status](https://travis-ci.org/splatpm/gcl.svg?branch=master)](https://travis-ci.org/splatpm/gcl)
-## Gout (Go OUTput is a library for handling ascii color and video attributes.)
+# Gout (Go OUTput)
 
-#### Formatting functions
+Gout is a library for handling ascii color and video attributes, output formatting,
+program output and logging.
+
+## Formatting functions
+
+There are time and data size formatting functions available, HumanTimeParse() is
+mostly only internally useful, but is useful enough that it was included in the
+publicly exported API
 
 * HumanSize(size int64) string
 * HumanTimeColon(secs int64) string
@@ -17,12 +24,14 @@ Look below for examples of how to use a logfile and how to set verbosity
 or prompt options for the console.
 
 * Info(string, args ...interface{})
-* Debug(string, args ...interface{})
+* Debug(string, args ...interface{}election results     )
 * Warn(string, args ...interface{})
 * Error(string, args ...interface{})
 * Status(string, args ...interface{})
 
 #### String type methods
+
+The String type is a alias for string, with the following methods.
 
 * Black() String
 * Red() String
@@ -37,3 +46,17 @@ or prompt options for the console.
 * Blink() String
 * Reverse() String
 * Conceal() String
+
+```go
+package main
+
+import (
+  "fmt"
+  "git.thwap.org/splat/gout"
+)
+
+func main() {
+  fmt.Println(gout.String("TEST").Bold().Red())
+  fmt.Println(gout.String("TEST").Blink().Green())
+}
+```
