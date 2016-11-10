@@ -17,6 +17,20 @@ publicly exported API
 * HumanTimeConcise(secs int64) string
 * HumanTimeParse(secs int64) map[string]int64
 
+*Example: Basic usage*
+```go
+package main
+
+import (
+  "fmt"
+  "git.thwap.org/splat/gout"
+)
+
+func main() {
+  fmt.Println(gout.HumanSize(1024))
+} // prints "1.0MB"
+```
+
 #### Output functions
 
 Output functions will optionally also push the messages to a logfile.
