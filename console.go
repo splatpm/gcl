@@ -2,6 +2,8 @@ package gout
 
 import (
 	"fmt"
+	"log"
+	"os"
 	"syscall"
 	"unsafe"
 )
@@ -9,6 +11,7 @@ import (
 var (
 	Output  output
 	Winsize winsize
+	Logfile *os.File
 )
 
 // data structures
@@ -18,6 +21,7 @@ type output struct {
 	Debug   bool
 	Quiet   bool
 	Verbose bool
+	ToFile  bool
 }
 
 type winsize struct {
@@ -52,6 +56,9 @@ func padding(spaces int) string {
 
 // Output functions
 func consoleOutput(t string, e string, f string, args ...interface{}) {
+	if Output.ToFile {
+		log.Printf("%s %s\n", t, fmt.Sprintf(f, args...))
+	}
 	fmt.Printf("%s %s %s%s",
 		Output.Prompts[t],
 		fmt.Sprintf(f, args...),
@@ -85,10 +92,30 @@ func Status(f string, args ...interface{}) {
 	consoleOutput("status", "\r", f, args)
 }
 
-// Setup
+// Output setup function
+func Setup(d bool, q bool, v bool, f string) {
+	if len(f) > 0 {
+		Logfile, e := os.OpenFile(f, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+		if e != nil {
+			panic(e)
+		}
+		log.SetOutput(Logfile)
+		Output = output{Prompts: make(map[string]string), Debug: d, Quiet: q, Verbose: v, ToFile: true}
+	} else {
+		Output = output{Prompts: make(map[string]string), Debug: d, Quiet: q, Verbose: v, ToFile: false}
+	}
+	Output.Prompts["info"] = "INFO"
+	Output.Prompts["warn"] = "WARN"
+	Output.Prompts["debug"] = "DEBUG"
+	Output.Prompts["error"] = "ERROR"
+	Output.Prompts["status"] = ""
+}
+
+// Setup example
+/*
 func init() {
 	Winsize = consInfo()
-	Output = output{Prompts: make(map[string]string), Debug: true, Quiet: false, Verbose: true}
+	Setup(true, false, true, false)
 	Output.Prompts["info"] = fmt.Sprintf("%s%s%s",
 		String(".").Cyan(),
 		String(".").Bold().Cyan(),
@@ -110,3 +137,4 @@ func init() {
 		String("-").Bold().Cyan(),
 		String("-").Bold().White())
 }
+*/

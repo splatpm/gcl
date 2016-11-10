@@ -35,14 +35,15 @@ or prompt options for the console.
 package main
 
 import (
-  _ "git.thwap.org/splat/gout"
+  "git.thwap.org/splat/gout"
 )
 
 func main() {
-  Info("Test %s message", "info")
-  Debug("Test %s message", "debug")
-  Warn("Test %s %d", "warning", 1)
-  Error("error message")
+  gout.Setup(true, false, true, "") // debug, quiet, verbose, logfile
+  gout.Info("Test %s message", "info")
+  gout.Debug("Test %s message", "debug")
+  gout.Warn("Test %s %d", "warning", 1)
+  gout.Error("error message")
 }
 ```
 
@@ -51,13 +52,30 @@ func main() {
 package main
 
 import (
-  _ "git.thwap.org/splat/gout"
+  "git.thwap.org/splat/gout"
 )
 
 func main() {
-  Info("Before")
-  Output.Prompts["info"] = String("###").Underline().Green()
-  Info("After")
+  gout.Setup(true, false, true, "")
+  gout.Info("Before")
+  gout.Output.Prompts["info"] = String("###").Underline().Green()
+  gout.Info("After")
+}
+```
+
+*Example: Setting an output logfile*
+```go
+package main
+
+import (
+  "git.thwap.org/splat/gout"
+)
+
+func main() {
+  gout.Setup(true, false, true, "/tmp/my-output.log")
+  gout.Info("Log message")
+  // prompts have nothing to do with logfile as only the type of promp
+  // or the key (ie: info, debug, etc) is used.
 }
 ```
 
