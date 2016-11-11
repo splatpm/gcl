@@ -17,11 +17,13 @@ var (
 // data structures
 
 type output struct {
-	Prompts map[string]string
-	Debug   bool
-	Quiet   bool
-	Verbose bool
-	ToFile  bool
+	Prompts   map[string]string
+	Debug     bool
+	Quiet     bool
+	Verbose   bool
+	ToFile    bool
+	Throbber  []string
+	lastThrob int
 }
 
 type winsize struct {
@@ -92,6 +94,11 @@ func Status(f string, args ...interface{}) {
 	consoleOutput("status", "\r", f, args)
 }
 
+func Throbber() string {
+	Output.lastThrob++
+	return Output.Throbber[Output.lastThrob-1]
+}
+
 // Output setup function
 func Setup(d bool, q bool, v bool, f string) {
 	if len(f) > 0 {
@@ -100,15 +107,32 @@ func Setup(d bool, q bool, v bool, f string) {
 			panic(e)
 		}
 		log.SetOutput(Logfile)
-		Output = output{Prompts: make(map[string]string), Debug: d, Quiet: q, Verbose: v, ToFile: true}
+		Output = output{
+			Prompts:   make(map[string]string),
+			Debug:     d,
+			Quiet:     q,
+			Verbose:   v,
+			ToFile:    true,
+			Throbber:  []string{},
+			lastThrob: 0,
+		}
 	} else {
-		Output = output{Prompts: make(map[string]string), Debug: d, Quiet: q, Verbose: v, ToFile: false}
+		Output = output{
+			Prompts:   make(map[string]string),
+			Debug:     d,
+			Quiet:     q,
+			Verbose:   v,
+			ToFile:    false,
+			Throbber:  []string{},
+			lastThrob: 0,
+		}
 	}
 	Output.Prompts["info"] = "INFO"
 	Output.Prompts["warn"] = "WARN"
 	Output.Prompts["debug"] = "DEBUG"
 	Output.Prompts["error"] = "ERROR"
 	Output.Prompts["status"] = ""
+	Output.Throbber = []string{"-", "\\", "|", "/"}
 }
 
 // Setup example
