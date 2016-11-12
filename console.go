@@ -95,7 +95,7 @@ func Status(f string, args ...interface{}) {
 }
 
 func Throbber() string {
-	if Output.lastThrob == Output.lastThrob+1 {
+	if Output.lastThrob == len(Output.Throbber)+1 {
 		Output.lastThrob = 1
 	} else {
 		Output.lastThrob++
