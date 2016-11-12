@@ -6,6 +6,8 @@ import (
 	"os"
 	"syscall"
 	"unsafe"
+
+	eval "github.com/Knetic/govaluate"
 )
 
 var (
@@ -45,6 +47,14 @@ func consInfo() winsize {
 		panic(errno)
 	}
 	return ws
+}
+
+func repeat(c string, n int) string {
+	retv := ""
+	for i := 0; i <= n; i++ {
+		retv += "#"
+	}
+	return retv
 }
 
 func padding(spaces int) string {
@@ -92,6 +102,15 @@ func Error(f string, args ...interface{}) {
 
 func Status(f string, args ...interface{}) {
 	consoleOutput("status", "\r", f, args)
+}
+
+func Progress(l int, p int) string {
+	rl := l - 2
+	expr, _ := eval.NewEvaluableExpression(fmt.Sprintf("%d * 0.%d", rl, p))
+	rslt, _ := expr.Evaluate(nil)
+	sp := repeat("#", rslt.(int))
+	pd := padding(rl - len(sp))
+	return fmt.Sprintf("[%s%s]", sp, pd)
 }
 
 func Throbber() string {
