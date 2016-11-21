@@ -40,7 +40,9 @@ func HumanTimeConcise(s int64) string {
 	data := HumanTimeParse(s)
 	keys := []string{"hr", "min", "sec"}
 	for _, val := range keys {
-		retv = Strappend(retv, fmt.Sprintf("%02d%s", data[val], string(val[0])))
+		if data[val] > 0 {
+			retv = Strappend(retv, fmt.Sprintf("%02d%s", data[val], string(val[0])))
+		}
 	}
 	return retv
 }
