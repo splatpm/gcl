@@ -26,58 +26,71 @@
 
 package gout
 
-import "fmt"
+import (
+	"log"
+	"os"
+)
 
-type String string
+var (
+	Output  output
+	Winsize winsize
+	Logfile *os.File
+)
 
-func (i String) Black() String {
-	return String(fmt.Sprintf("\033[30m%s\033[0m", i))
+// Output setup function
+func Setup(d bool, q bool, v bool, f string) {
+	var toFile bool
+	if len(f) > 0 {
+		Logfile, e := os.OpenFile(f, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+		if e != nil {
+			panic(e)
+		}
+		log.SetOutput(Logfile)
+		toFile = true
+	} else {
+		toFile = false
+	}
+	Output = output{
+		Prompts:   make(map[string]string),
+		Debug:     d,
+		Quiet:     q,
+		Verbose:   v,
+		ToFile:    toFile,
+		Throbber:  []string{},
+		lastThrob: 0,
+	}
+	Output.Prompts["info"] = "INFO"
+	Output.Prompts["warn"] = "WARN"
+	Output.Prompts["debug"] = "DEBUG"
+	Output.Prompts["error"] = "ERROR"
+	Output.Prompts["status"] = ""
+	Output.Throbber = []string{"-", "\\", "|", "/"}
 }
 
-func (i String) Red() String {
-	return String(fmt.Sprintf("\033[31m%s\033[0m", i))
+// Setup example
+/*
+func init() {
+	Winsize = consInfo()
+	Setup(true, false, true, false)
+	Output.Prompts["info"] = fmt.Sprintf("%s%s%s",
+		String(".").Cyan(),
+		String(".").Bold().Cyan(),
+		String(".").Bold().White())
+	Output.Prompts["warn"] = fmt.Sprintf("%s%s%s",
+		String(".").Yellow(),
+		String(".").Bold().Yellow(),
+		String(".").Bold().White())
+	Output.Prompts["debug"] = fmt.Sprintf("%s%s%s",
+		String(".").Purple(),
+		String(".").Bold().Purple(),
+		String(".").Bold().White())
+	Output.Prompts["error"] = fmt.Sprintf("%s%s%s",
+		String(".").Red(),
+		String(".").Bold().Red(),
+		String(".").Bold().White())
+	Output.Prompts["status"] = fmt.Sprintf("%s%s%s",
+		String("-").Cyan(),
+		String("-").Bold().Cyan(),
+		String("-").Bold().White())
 }
-
-func (i String) Green() String {
-	return String(fmt.Sprintf("\033[32m%s\033[0m", i))
-}
-
-func (i String) Yellow() String {
-	return String(fmt.Sprintf("\033[33m%s\033[0m", i))
-}
-
-func (i String) Blue() String {
-	return String(fmt.Sprintf("\033[34m%s\033[0m", i))
-}
-
-func (i String) Purple() String {
-	return String(fmt.Sprintf("\033[35m%s\033[0m", i))
-}
-
-func (i String) Cyan() String {
-	return String(fmt.Sprintf("\033[36m%s\033[0m", i))
-}
-
-func (i String) White() String {
-	return String(fmt.Sprintf("\033[37m%s\033[0m", i))
-}
-
-func (i String) Bold() String {
-	return String(fmt.Sprintf("\033[1m%s\033[0m", i))
-}
-
-func (i String) Underline() String {
-	return String(fmt.Sprintf("\033[4m%s\033[0m", i))
-}
-
-func (i String) Blink() String {
-	return String(fmt.Sprintf("\033[5m%s\033[0m", i))
-}
-
-func (i String) Reverse() String {
-	return String(fmt.Sprintf("\033[7m%s\033[0m", i))
-}
-
-func (i String) Conceal() String {
-	return String(fmt.Sprintf("\033[8m%s\033[0m", i))
-}
+*/
