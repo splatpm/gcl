@@ -7,18 +7,6 @@ import (
 	eval "github.com/Knetic/govaluate"
 )
 
-// data structures
-
-type output struct {
-	Prompts   map[string]string
-	Debug     bool
-	Quiet     bool
-	Verbose   bool
-	ToFile    bool
-	Throbber  []string
-	lastThrob int
-}
-
 // Output functions
 func consoleOutput(t string, e string, f string, args ...interface{}) {
 	Winsize = ConsInfo()

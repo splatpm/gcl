@@ -31,6 +31,12 @@ import (
 	"os"
 )
 
+var (
+	Output  output
+	Winsize winsize
+	Logfile *os.File
+)
+
 // Output setup function
 func Setup(d bool, q bool, v bool, f string) {
 	if len(f) > 0 {
