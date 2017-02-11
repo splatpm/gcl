@@ -23,7 +23,7 @@ package main
 
 import (
   "fmt"
-  "git.thwap.org/splat/gout"
+  "github.com/splatpm/gout"
 )
 
 func main() {
@@ -49,7 +49,7 @@ or prompt options for the console.
 package main
 
 import (
-  "git.thwap.org/splat/gout"
+  "github.com/splatpm/gout"
 )
 
 func main() {
@@ -66,13 +66,13 @@ func main() {
 package main
 
 import (
-  "git.thwap.org/splat/gout"
+  "github.com/splatpm/gout"
 )
 
 func main() {
   gout.Setup(true, false, true, "")
   gout.Info("Before")
-  gout.Output.Prompts["info"] = String("###").Underline().Green()
+  gout.Output.Prompts["info"] = gout.Underline(gout.Green("###"))
   gout.Info("After")
 }
 ```
@@ -82,7 +82,7 @@ func main() {
 package main
 
 import (
-  "git.thwap.org/splat/gout"
+  "github.com/splatpm/gout"
 )
 
 func main() {
@@ -118,11 +118,11 @@ package main
 
 import (
   "fmt"
-  "git.thwap.org/splat/gout"
+  "github.com/splatpm/gout"
 )
 
 func main() {
-  fmt.Println(gout.String("TEST").Bold().Red())
-  fmt.Println(gout.String("TEST").Blink().Green())
+  fmt.Println(gout.Bold(gout.Red("TEST")))
+  fmt.Println(gout.Blink(gout.Green("TEST")))
 }
 ```
