@@ -1,6 +1,6 @@
 
 
-[![Build Status](https://travis-ci.org/splatpm/gcl.svg?branch=master)](https://travis-ci.org/splatpm/gcl)
+[![Build Status](https://travis-ci.org/splatpm/gout.svg?branch=master)](https://travis-ci.org/splatpm/gout)
 # Gout (Go OUTput)
 
 Gout is a library for handling ascii color and video attributes, output formatting,
