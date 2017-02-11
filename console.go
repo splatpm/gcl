@@ -1,7 +1,6 @@
 package gout
 
 import (
-	"os"
 	"syscall"
 	"unsafe"
 )

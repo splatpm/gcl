@@ -39,31 +39,25 @@ var (
 
 // Output setup function
 func Setup(d bool, q bool, v bool, f string) {
+	var toFile bool
 	if len(f) > 0 {
 		Logfile, e := os.OpenFile(f, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 		if e != nil {
 			panic(e)
 		}
 		log.SetOutput(Logfile)
-		Output = output{
-			Prompts:   make(map[string]string),
-			Debug:     d,
-			Quiet:     q,
-			Verbose:   v,
-			ToFile:    true,
-			Throbber:  []string{},
-			lastThrob: 0,
-		}
+		toFile = true
 	} else {
-		Output = output{
-			Prompts:   make(map[string]string),
-			Debug:     d,
-			Quiet:     q,
-			Verbose:   v,
-			ToFile:    false,
-			Throbber:  []string{},
-			lastThrob: 0,
-		}
+		toFile = false
+	}
+	Output = output{
+		Prompts:   make(map[string]string),
+		Debug:     d,
+		Quiet:     q,
+		Verbose:   v,
+		ToFile:    toFile,
+		Throbber:  []string{},
+		lastThrob: 0,
 	}
 	Output.Prompts["info"] = "INFO"
 	Output.Prompts["warn"] = "WARN"
